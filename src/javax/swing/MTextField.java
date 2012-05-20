@@ -56,6 +56,8 @@ public class MTextField extends JPasswordField implements FocusListener,KeyListe
 		setForeground(Color.gray);
 
 		gray = true;
+		if(password)
+			setEchoChar(noBullet);
 	}
 	
 	public void setPrompt(String text){
@@ -66,6 +68,15 @@ public class MTextField extends JPasswordField implements FocusListener,KeyListe
 		setGrayText(text);
 		
 	}
+	
+	public void setHidden(boolean hidden){
+		password = hidden;
+		if(password && !gray)
+			setEchoChar(bullet);
+		else
+			setEchoChar(noBullet);
+	}
+	
 	@Override
 	public void focusGained(FocusEvent e) {
 		// TODO Auto-generated method stub
@@ -88,8 +99,9 @@ public class MTextField extends JPasswordField implements FocusListener,KeyListe
 		if(gray){
 			setText("");
 			setForeground(Color.black);
-			removeKeyListener(this);
 			gray = false;
+			if(password)
+				setEchoChar(bullet);
 		}
 		
 	}
