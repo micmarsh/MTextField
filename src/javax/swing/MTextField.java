@@ -62,9 +62,12 @@ public class MTextField extends JPasswordField {
 	}
 	
 	public void setPrompt(String text){
-		prompt = text;
-		
-		setGrayText(text);
+		if(text.equals(""))
+			prompt = null;
+		else{
+			prompt = text;	
+			setGrayText(text);
+		}
 		
 	}
 	
