@@ -10,12 +10,13 @@ import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 
 
-public class MTextField extends JPasswordField implements FocusListener,KeyListener{
+public class MTextField extends JPasswordField {
 	private boolean password;
 	private boolean gray = false;
 	private final char bullet = '\u2022';
 	private final char noBullet = (char)0;
 	private  String prompt = null;
+	private final Listeners listener = new Listeners();
 	
 	
 	
@@ -46,8 +47,8 @@ public class MTextField extends JPasswordField implements FocusListener,KeyListe
 	}
 	
 	private void setupListeners(){
-		addFocusListener(this);
-		addKeyListener(this);
+		addFocusListener(listener);
+		addKeyListener(listener);
 	}
 	
 	private void setGrayText(String text){
@@ -63,8 +64,6 @@ public class MTextField extends JPasswordField implements FocusListener,KeyListe
 	public void setPrompt(String text){
 		prompt = text;
 		
-		addKeyListener(this);
-		
 		setGrayText(text);
 		
 	}
@@ -77,48 +76,61 @@ public class MTextField extends JPasswordField implements FocusListener,KeyListe
 			setEchoChar(noBullet);
 	}
 	
-	@Override
-	public void focusGained(FocusEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void focusLost(FocusEvent e) {
-		if(prompt != null && getText().equals("") ){
-			setGrayText(prompt);
-		}
-	}
-	
 	@Override 
 	public String getText(){
 		return new String(getPassword());
 	}
 	
-	@Override
-	public void keyPressed(KeyEvent arg0) {
-		if(gray){
+	public void disablePrompt(){
+		if(gray)
 			setText("");
-			setForeground(Color.black);
-			gray = false;
-			if(password)
-				setEchoChar(bullet);
-		}
+		gray = false;
+		prompt = null;
 		
 	}
-
-	@Override
-	public void keyReleased(KeyEvent arg0) {
-		if( prompt != null && getText().equals("")){
-			setGrayText(prompt);
-			setCaretPosition(0);
+	
+	private class Listeners implements FocusListener,KeyListener{
+	
+		@Override
+		public void focusGained(FocusEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void focusLost(FocusEvent e) {
+			if(prompt != null && getText().equals("") ){
+				setGrayText(prompt);
+			}
 		}
 		
-	}
-
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
 		
+		
+		@Override
+		public void keyPressed(KeyEvent arg0) {
+			if(gray){
+				setText("");
+				setForeground(Color.black);
+				gray = false;
+				if(password)
+					setEchoChar(bullet);
+			}
+			
+		}
+	
+		@Override
+		public void keyReleased(KeyEvent arg0) {
+			if( prompt != null && getText().equals("")){
+				setGrayText(prompt);
+				setCaretPosition(0);
+			}
+			
+		}
+	
+		@Override
+		public void keyTyped(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 	
 	
