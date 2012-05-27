@@ -1,6 +1,7 @@
 package javax.swing;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
@@ -134,6 +135,20 @@ public class MTextField extends JPasswordField {
 			// TODO Auto-generated method stub
 			
 		}
+	}
+	
+	@Override
+	public void setSize(int width,int height){
+		setMinimumSize(new Dimension(width,height));
+		setMaximumSize(new Dimension(width,height));
+		setPreferredSize(new Dimension(width,height));
+	}
+	
+	@Override
+	public Dimension getSize(){
+		
+		return getPreferredSize();
+		
 	}
 	
 	
